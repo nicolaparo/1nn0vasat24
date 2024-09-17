@@ -1,0 +1,59 @@
+﻿@page "/example1"
+
+<h3>Example 1 - 3D</h3>
+
+<div id="scene">
+    <div id="camera">
+        <div id="rotateX">
+            <div id="square">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    /* remove the comments to animate the square */
+
+    #scene {
+        width: 600px;
+        height: 400px;
+        position: relative;
+        border: 1px solid black;
+        /* perspective: 1000px; */
+        /* transform-style: preserve-3d; */
+    }
+
+        #scene, #scene div {
+            position: absolute;
+            /* transform-style: preserve-3d; */
+        }
+
+    #camera {
+        left: 50%;
+        top: 50%;
+    }
+
+    /* #rotateX {
+        animation: rotateXAnimation 5s infinite linear;
+    } */
+
+    #square {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    @@keyframes rotateXAnimation {
+        0% {
+            transform: rotateX(0deg);
+        }
+
+        100% {
+            transform: rotateX(360deg);
+        }
+    }
+
+</style>

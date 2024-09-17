@@ -1,0 +1,100 @@
+﻿@page "/example2"
+
+<h3>Example 2 - 3D Rotating Cube</h3>
+
+<div id="scene">
+    <div id="camera">
+        <div id="rotateX">
+            <div id="cube">
+                <div class="cube-face" id="face-north">North</div>
+                <div class="cube-face" id="face-south">South</div>
+                <div class="cube-face" id="face-east">East</div>
+                <div class="cube-face" id="face-west">West</div>
+                <div class="cube-face" id="face-top">Top</div>
+                <div class="cube-face" id="face-bottom">Bottom</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    /* remove the comments to animate the square */
+
+    #scene {
+        width: 600px;
+        height: 400px;
+        position: relative;
+        border: 1px solid black;
+        perspective: 1000px;
+        transform-style: preserve-3d;
+    }
+
+        #scene, #scene div {
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+
+    #camera {
+        left: 50%;
+        top: 50%;
+    }
+
+    #rotateX {
+        animation: rotateXAnimation 5s infinite linear;
+    }
+
+    .cube-face {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        transform-origin: center;
+    }
+
+    #cube {
+        transform: translate(-50px, -50px);
+    }
+
+    #face-north {
+        background: #f00;
+        transform: rotateX(90deg) translateZ(50px);
+    }
+
+    #face-south {
+        transform: rotateX(-90deg) translateZ(50px);
+        background: #ff0;
+    }
+
+    #face-east {
+        transform: rotateY(90deg) translateZ(50px);
+        background: #0f0;
+    }
+
+    #face-west {
+        transform: rotateY(-90deg) translateZ(50px);
+        background: #0ff;
+    }
+
+    #face-top {
+        transform: rotateX(0deg) translateZ(50px);
+        background: #00f;
+    }
+
+    #face-bottom {
+        transform: rotateX(180deg) translateZ(50px);
+        background: #f0f;
+    }
+
+
+
+    @@keyframes rotateXAnimation {
+        0% {
+            transform: rotateX(0deg) rotateY(0deg);
+        }
+
+        100% {
+            transform: rotateX(360deg) rotateY(360deg);
+        }
+    }
+
+</style>
