@@ -1,0 +1,145 @@
+﻿@page "/example4"
+
+<h3>Example 4 - SVG Fire Burst</h3>
+
+@using System.Text
+
+<svg viewBox="-110 -110 220 220" width="600" style="border: 1px solid black">
+
+    <!-- STEP 1 -->
+
+    <g>
+        <ellipse rx="10" ry="20" cx="0" fill="red" style="" />
+    </g>
+
+    <!-- STEP 2 -->
+
+    @*     <g>
+    <defs>
+    <radialGradient id="@firegradient">
+    <stop offset="0%" stop-color="@Color1" />
+    <stop offset="50%" stop-color="@Color2" />
+    <stop offset="100%" stop-color="@Color3" />
+    </radialGradient>
+    </defs>
+    <ellipse rx="10" ry="20" cx="0" fill="url(#@firegradient)" style="" />
+    </g> *@
+
+    <!-- STEP 3 -->
+
+    @*     <g>
+    <defs>
+    <radialGradient id="@firegradient">
+    <stop offset="0%" stop-color="@Color1" />
+    <stop offset="50%" stop-color="@Color2" />
+    <stop offset="100%" stop-color="@Color3" />
+    </radialGradient>
+    </defs>
+    @for (var i = 0; i < Flames; i++)
+    {
+    var angle = 360f / Flames * i; // + Random.Shared.NextSingle(720f / Flames);
+
+    <g style="transform: rotate(@(angle)deg)">
+    <ellipse rx="10" ry="20" cx="0" fill="url(#@firegradient)" style="
+    animation: fire-explosion-animation .5s linear infinite;
+    animation-delay: @(Random.Shared.NextDouble(.5f))s;
+    animation-fill-mode: both
+    " />
+    </g>
+    }
+    </g> *@
+
+    <!-- STEP 4 -->
+
+    @*  <g>
+    <defs>
+    <filter id="@noise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="1" result="turbulence" />
+    <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="20" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <radialGradient id="@firegradient">
+    <stop offset="0%" stop-color="@Color1" />
+    <stop offset="50%" stop-color="@Color2" />
+    <stop offset="100%" stop-color="@Color3" />
+    </radialGradient>
+    </defs>
+    <g filter="url(#@noise)">
+    @for (var i = 0; i < Flames; i++)
+    {
+    var angle = 360f / Flames * i; // + Random.Shared.NextSingle(720f / Flames);
+
+    <g style="transform: rotate(@(angle)deg)">
+    <ellipse rx="10" ry="20" cx="0" fill="url(#@firegradient)" style="
+    animation: fire-explosion-animation .5s linear 1;
+    animation-delay: @(Random.Shared.NextDouble(.5f))s;
+    animation-fill-mode: both
+    " />
+    </g>
+    }
+    </g>
+    </g> *@
+</svg>
+<style>
+    @@keyframes fire-explosion-animation {
+        from {
+            cy: 0;
+            rx: 5;
+            ry: 10;
+        }
+
+        to {
+            cy: 100;
+            rx: 10;
+            ry: 20;
+        }
+
+        from, to {
+            opacity: 0;
+        }
+
+        25%, 75% {
+            opacity: 1;
+        }
+    }
+</style>
+
+@code {
+
+    private readonly string @noise = $"noise{Guid.NewGuid():N}";
+    private readonly string @firegradient = $"firegradient{Guid.NewGuid():N}";
+
+    [Parameter]
+    public string Color1 { get; set; } = "#f90";
+    [Parameter]
+    public string Color2 { get; set; } = "#f30";
+    [Parameter]
+    public string Color3 { get; set; } = "#f000";
+
+    [Parameter]
+    public int Flames { get; set; } = 20;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Attributes { get; set; }
+
+    private string CreateBuzzyLine()
+    {
+        var weights = Enumerable.Range(0, 30).Select(x => Random.Shared.NextDouble()).ToArray();
+        var max = weights.Sum();
+        var normalized = weights.Select(x => x / max * 100).ToArray();
+
+        var builder = new StringBuilder();
+
+        builder.Append("M 0 0");
+
+        var y = 0d;
+        @foreach (var weight in normalized)
+        {
+            y += weight;
+            var x = Random.Shared.NextDouble(-5, 5);
+            builder.Append($" L {x} {y}");
+        }
+
+        return builder.ToString();
+
+    }
+}

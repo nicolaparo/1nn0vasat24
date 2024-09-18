@@ -1,0 +1,81 @@
+﻿@using System.Text
+
+<svg viewBox="-110 -110 220 220" @attributes=Attributes>
+    <defs>
+        <filter id="@blur" filterUnits="userSpaceOnUse">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+        </filter>
+        <style>
+            @@keyframes electric-explosion-animation {
+                from {
+                    stroke-dashoffset: 550;
+                }
+
+                to {
+                    stroke-dashoffset: 300;
+                }
+
+                from, to {
+                    opacity: 0;
+                }
+
+                25%, 75% {
+                    opacity: 1;
+                }
+            }
+        </style>
+    </defs>
+    @for (var i = 0; i < Rays; i++)
+    {
+        var path = CreateBuzzyLine();
+        <g style="transform-origin: top left; transform: rotateZ(@( 360f / Rays * i + Random.Shared.NextSingle(720f / Rays))deg)">
+            <g filter="url(#@blur)">
+                <path d="@path" fill="none" stroke="@Color2" stroke-width="1"
+                      stroke-dasharray="50 500"
+                      style="animation: electric-explosion-animation .5s linear 1; animation-fill-mode: both" />
+            </g>
+            <path d="@path" fill="none" stroke="@Color1" stroke-width="1"
+                  stroke-dasharray="50 500"
+                  style="animation: electric-explosion-animation .5s linear 1; animation-fill-mode: both" />
+        </g>
+    }
+</svg>
+
+@code {
+
+    private readonly string @blur = $"blur{Guid.NewGuid():N}";
+
+    [Parameter]
+    public string Color1 { get; set; } = "#ff7";
+
+    [Parameter]
+    public string Color2 { get; set; } = "#fff";
+
+    [Parameter]
+    public int Rays { get; set; } = 20;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Attributes { get; set; }
+
+    private string CreateBuzzyLine()
+    {
+        var weights = Enumerable.Range(0, 30).Select(x => Random.Shared.NextDouble()).ToArray();
+        var max = weights.Sum();
+        var normalized = weights.Select(x => x / max * 100).ToArray();
+
+        var builder = new StringBuilder();
+
+        builder.Append("M 0 0");
+
+        var y = 0d;
+        @foreach (var weight in normalized)
+        {
+            y += weight;
+            var x = Random.Shared.NextDouble(-5, 5);
+            builder.Append($" L {x} {y}");
+        }
+
+        return builder.ToString();
+
+    }
+}

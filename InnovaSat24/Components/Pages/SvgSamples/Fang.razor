@@ -1,0 +1,77 @@
+﻿<svg viewBox="0 0 100 100" @attributes=Attributes>
+    <defs>
+        <linearGradient id="@gradient1" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="@Color1" />
+            <stop offset="100%" stop-color="@Color2" />
+        </linearGradient>
+        <linearGradient id="@gradient2" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="@Color2" />
+            <stop offset="100%" stop-color="@Color1" />
+        </linearGradient>
+
+
+        <style>
+            @@keyframes fang-upper-animation {
+                from {
+                    y: 0;
+                }
+
+                25%, to {
+                    y: 25;
+                }
+
+                from, to {
+                    opacity: 0;
+                }
+
+                25% {
+                    opacity: 1;
+                }
+            }
+
+            @@keyframes fang-lower-animation {
+                from {
+                    y: 50;
+                }
+
+                25%, to {
+                    y: 25;
+                }
+
+                from, to {
+                    opacity: 0;
+                }
+
+                25% {
+                    opacity: 1;
+                }
+            }
+        </style>
+    </defs>
+    <mask id="@myMask">
+        <image xlink:href="/res/teeth-top.png" width="100%" y="0"
+               style="animation: fang-upper-animation .75s 1 ease-out; animation-fill-mode: both;" />
+    </mask>
+    <rect width="100%" height="100%" fill="url(#@gradient1)" mask="url(#@myMask)" />
+    <mask id="@myMask2" style="transform: translateY(-100%)">
+        <image xlink:href="/res/teeth-bottom.png" width="100%" y="50"
+               style="animation: fang-lower-animation .75s 1 ease-out; animation-fill-mode: both;" />
+    </mask>
+    <rect width="100%" height="100%" fill="url(#@gradient2)" mask="url(#@myMask2)" />
+</svg>
+
+@code {
+    private static readonly string gradient1 = $"a{Guid.NewGuid():N}";
+    private static readonly string gradient2 = $"a{Guid.NewGuid():N}";
+    private static readonly string myMask = $"a{Guid.NewGuid():N}";
+    private static readonly string myMask2 = $"a{Guid.NewGuid():N}";
+
+    [Parameter]
+    public string Color1 { get; set; }
+
+    [Parameter]
+    public string Color2 { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Attributes { get; set; }
+}

@@ -1,0 +1,56 @@
+﻿@page "/example5"
+@using InnovaSat24.Components.Pages.SvgSamples
+
+<style>
+    body {
+        background: #888;
+    }
+</style>
+
+<h3>Example 5 - SVG Samples</h3>
+
+<p>Le SVG sono wrappate dentro ad un componente Blazor. Puoi cambiare i colori dell'animazione con i color pickers qui sotto </p>
+<div>
+    <button class="btn btn-primary" @onclick='() => SetEffect("electric")'>Elecric Explosion</button>
+    <button class="btn btn-primary" @onclick='() => SetEffect("fire")'>Fire Explosion</button>
+    <button class="btn btn-primary" @onclick='() => SetEffect("bite")'>Bite</button>
+
+
+    <div class="btn-group">
+        <input type="color" class="btn p-0" @bind="color1" />
+        <input type="color" class="btn p-0" @bind="color2" />
+        <input type="color" class="btn p-0" @bind="color3" />
+    </div>
+</div>
+
+<div style="width: 500px; height: 500px">
+
+    @switch (effect)
+    {
+        case "electric":
+            <ElectricExplosion Color1="@color1" Color2="@color2" />
+            break;
+        case "fire":
+            <FireExplosion Color1="@color1" Color2="@color2" Color3="@color3" />
+            break;
+        case "bite":
+            <Fang Color1="@color1" Color2="@color2" />
+            break;
+        default:
+            break;
+    }
+</div>
+@code {
+    private string effect = "electric";
+    private string color1;
+    private string color2;
+    private string color3;
+
+    private void SetEffect(string effectName)
+    {
+        effect = "";
+        StateHasChanged();
+        effect = effectName;
+        StateHasChanged();
+    }
+}
