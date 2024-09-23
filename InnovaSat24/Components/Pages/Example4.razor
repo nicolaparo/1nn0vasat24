@@ -7,14 +7,12 @@
 <svg viewBox="-110 -110 220 220" width="600" style="border: 1px solid black">
 
     <!-- STEP 1 -->
-
-    <g>
-        <ellipse rx="10" ry="20" cx="0" fill="red" style="" />
+        <g>
+    <ellipse rx="10" ry="20" cx="0" fill="red" style="" />
     </g>
-
+   
     <!-- STEP 2 -->
-
-    @*     <g>
+    @* <g>
     <defs>
     <radialGradient id="@firegradient">
     <stop offset="0%" stop-color="@Color1" />
@@ -26,8 +24,7 @@
     </g> *@
 
     <!-- STEP 3 -->
-
-    @*     <g>
+    @* <g>
     <defs>
     <radialGradient id="@firegradient">
     <stop offset="0%" stop-color="@Color1" />
@@ -50,33 +47,32 @@
     </g> *@
 
     <!-- STEP 4 -->
+    @* <g>
+        <defs>
+            <filter id="@noise">
+                <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="1" result="turbulence" />
+    <!-- <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="20" xChannelSelector="R" yChannelSelector="G" /> -->
+            </filter>
+            <radialGradient id="@firegradient">
+                <stop offset="0%" stop-color="@Color1" />
+                <stop offset="50%" stop-color="@Color2" />
+                <stop offset="100%" stop-color="@Color3" />
+            </radialGradient>
+        </defs>
+        <g filter="url(#@noise)">
+            @for (var i = 0; i < Flames; i++)
+            {
+                var angle = 360f / Flames * i; // + Random.Shared.NextSingle(720f / Flames);
 
-    @*  <g>
-    <defs>
-    <filter id="@noise">
-    <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="1" result="turbulence" />
-    <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="20" xChannelSelector="R" yChannelSelector="G" />
-    </filter>
-    <radialGradient id="@firegradient">
-    <stop offset="0%" stop-color="@Color1" />
-    <stop offset="50%" stop-color="@Color2" />
-    <stop offset="100%" stop-color="@Color3" />
-    </radialGradient>
-    </defs>
-    <g filter="url(#@noise)">
-    @for (var i = 0; i < Flames; i++)
-    {
-    var angle = 360f / Flames * i; // + Random.Shared.NextSingle(720f / Flames);
-
-    <g style="transform: rotate(@(angle)deg)">
-    <ellipse rx="10" ry="20" cx="0" fill="url(#@firegradient)" style="
-    animation: fire-explosion-animation .5s linear 1;
-    animation-delay: @(Random.Shared.NextDouble(.5f))s;
-    animation-fill-mode: both
-    " />
-    </g>
-    }
-    </g>
+                <g style="transform: rotate(@(angle)deg)">
+                    <ellipse rx="10" ry="20" cx="0" fill="url(#@firegradient)" style="
+                    animation: fire-explosion-animation .5s linear infinite;
+                    animation-delay: @(Random.Shared.NextDouble(.5f))s;
+                    animation-fill-mode: both
+                        " />
+                </g>
+            }
+        </g>
     </g> *@
 </svg>
 <style>

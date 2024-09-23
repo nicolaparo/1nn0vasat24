@@ -1,0 +1,41 @@
+﻿@page "/example6"
+
+<style>
+    body {
+        background: #888;
+    }
+</style>
+
+<h3>Example 6 - Animate a sprite</h3>
+
+<div id="sprite">
+</div>
+
+<style>
+
+    #sprite {
+        width: 256px;
+        height: 256px;
+        background: url(/res/hit-yellow.png?jg);
+        border: 1px solid black;
+        /* animation: sprite-animation 5s infinite; */
+    }
+
+    <style>
+        @@keyframes sprite-animation {
+            @for (var i = 0; i < 16; i++)
+            {
+                var offsetX = 256 * (i % 4);
+                var offsetY = 256 * (i / 4);
+
+                <text>
+                    @($"{i * (100f / 16)}%") {
+                        background-position-x: -@(offsetX)px;
+                        background-position-y: -@(offsetY)px;
+                    }
+                </text>
+            }
+        }
+    </style>
+
+</style>
